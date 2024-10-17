@@ -1,0 +1,15 @@
+Flask==2.0.0
+pytest==5.1.2
+Flask-JWT==0.3.2
+Flask-JWT-Extended==2.0.0
+Flask-Mail==0.9.1
+Flask-RESTful==0.3.9
+Flask-SQLAlchemy==2.5.1
+PyJWT==1.4.0
+SQLAlchemy==1.4.44
+typing_extensions==4.4.0
+Werkzeug==2.0.0
+requests~=2.28.1
+bcrypt
+twilio
+# VQG7HMPQUEAD3BTWVFXKSYUC

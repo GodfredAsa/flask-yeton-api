@@ -7,7 +7,7 @@ from flask_restful import Resource
 from enums.OrderStatus import OrderStatus
 from enums.PaymentStatus import PaymentStatus
 from model.Item import ItemModel
-from model.OrderItemModel import OrderItemModel
+from model.OrderItem import OrderItemModel
 from model.User import UserModel
 from utils.GeneralUtils import return_message
 from utils.OrderItemUtils import order_data
@@ -18,7 +18,7 @@ class PlaceOrders(Resource):
     def get(self):  # NOT COMPLETED ORDERS
         return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus != OrderStatus.COMPLETED]
 
-    @jwt_required
+    # @jwt_required
     def post(self):
         data = order_data()
         user = UserModel.find_by_uuid(data['userId'])
@@ -100,6 +100,12 @@ class CancelPlacedOrder(Resource):
         item.save_to_db()
         order.delete_from_db()
         return return_message(status.OK, f"Order with {order.orderCode} code cancelled successfully")
+
+
+class OrdersFulfilledResource(Resource):
+    @jwt_refresh_token_required
+    def get(self):
+        return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus == OrderStatus.COMPLETED]
 
 
 class AllUserOrders(Resource):

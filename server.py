@@ -9,14 +9,22 @@ from resource.CategoryResource import CategoriesResource, CategoryResource
 from resource.FAQResouce import FAQsResource, FAQResource
 from resource.ItemGalleryResource import GalleriesResource, ItemGalleryResource, GalleryResource
 from resource.ItemResource import ItemsResource, ItemResource, AdminItemsResource, AdminItemResource
-from resource.OrderItemResource import PlaceOrders, PlacedOrderResource, CancelPlacedOrder, AllUserOrders
+from resource.OrderItemResource import PlaceOrders, PlacedOrderResource, CancelPlacedOrder, AllUserOrders, \
+    OrdersFulfilledResource
 from resource.RegionsResource import RegionsResource, RegionResource
 from resource.UserResource import UserRegistrationResource, UserLogin, LogoutUser, AdminUserResource, \
     BlackListUserResource
 from db import db
+from flask_cors import CORS
 
+from resource.VendorResource import VendorResource
 
 app = Flask(__name__)
+
+# CORS(app, resources={r"/api/*": {"origins": "URL"}})
+CORS(app)
+
+
 jwt = JWTManager(app)
 api = Api(app)
 
@@ -59,14 +67,16 @@ api.add_resource(PlacedOrderResource, "/api/placed-orders/<string:orderId>")
 api.add_resource(CancelPlacedOrder, "/api/orders/<string:orderId>/cancel")
 api.add_resource(AllUserOrders, "/api/users/<string:userId>/orders")  # user orders
 
+api.add_resource(OrdersFulfilledResource, "/api/admin/orders/fulfilled")  # user orders
 
 # ADMIN RESOURCES not used in postman BlackListUserResource
-
 api.add_resource(AdminUserResource, "/api/users/admin")
-
 api.add_resource(AdminItemsResource, "/api/admin/items")
 api.add_resource(AdminItemResource, "/api/admin/items/<string:itemId>")
 api.add_resource(BlackListUserResource, "/api/admin/users/<string:email>/blacklist")
+
+
+api.add_resource(VendorResource, "/api/vendors")
 
 
 if __name__ == "__main__":

@@ -2,7 +2,6 @@ from datetime import datetime
 import http.client as status
 
 from flask import jsonify
-from flask_jwt import jwt_required
 from flask_jwt_extended import jwt_refresh_token_required
 from flask_restful import Resource
 from model.Category import CategoryModel
@@ -36,6 +35,7 @@ class AdminItemsResource(Resource):
     @jwt_refresh_token_required
     def post(self):
         data = item_data()
+        # print(data)
         if not CategoryModel.find_by_uuid(data['categoryId']):
             return return_message(404, "Category not found")
         if data['condition'] not in ["NEW", "SLIGHTLY USED"]:

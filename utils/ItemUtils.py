@@ -12,6 +12,7 @@ _item_parser.add_argument("price", type=float, required=True, help=BLANK_ERROR.f
 _item_parser.add_argument("cost", type=float, required=True, help=BLANK_ERROR.format("cost"))
 _item_parser.add_argument("stock", type=int, required=True, help=BLANK_ERROR.format("stock"))
 _item_parser.add_argument("image", type=str, required=True, help=BLANK_ERROR.format("image"))
+_item_parser.add_argument("hasVendor", type=bool, required=True, help=BLANK_ERROR.format("hasVendor"))
 _item_parser.add_argument("hasGallery", type=bool, required=True, help=BLANK_ERROR.format("hasGallery"))
 _item_parser.add_argument("forSale", type=str, required=True, help=BLANK_ERROR.format("selling"))
 

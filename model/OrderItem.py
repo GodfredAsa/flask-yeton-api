@@ -29,7 +29,7 @@ class OrderItemModel(db.Model):
         self.userId = userId
         self.itemId = itemId
         self.orderId = generate_uuid()
-        self.itemPrice = ItemModel.find_by_uuid(itemId).price
+        self.itemPrice = ItemModel.find_by_uuid(itemId).sellingPrice
         self.totalCost = self.qty * self.itemPrice
         self.orderStatus = OrderStatus.PENDING
         self.paymentStatus = PaymentStatus.PENDING
@@ -39,7 +39,7 @@ class OrderItemModel(db.Model):
 
     def __str__(self):
         return f"< Order Items: Name:{ItemModel.find_by_uuid(self.itemId).name} " \
-               f"Price:{ItemModel.find_by_uuid(self.itemId).price} " \
+               f"Price:{ItemModel.find_by_uuid(self.itemId).sellingPrice} " \
                f"total Cost: {self.totalCost}"
 
     def json(self):
@@ -48,8 +48,8 @@ class OrderItemModel(db.Model):
             "price": self.itemPrice,
             "quantity": self.qty,
             "totalCost": self.totalCost,
-            "item": ItemModel.find_by_uuid(self.itemId).json(),
-            "user": UserModel.find_by_uuid(self.userId).json(),
+            "item": self.itemId,
+            "user": self.userId,
             "orderStatus": self.orderStatus,
             "paymentStatus": self.paymentStatus,
             "orderDate": str(self.createdAt),

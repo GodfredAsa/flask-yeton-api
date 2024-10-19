@@ -7,7 +7,6 @@ class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(20), unique=True)
     name = db.Column(db.String(80), nullable=False)
-    # email = db.Column(db.String(80), nullable=False)
     imageUrl = db.Column(db.String(250))
     phone_number = db.Column(db.String(10), nullable=False, unique=True)
     is_admin = db.Column(db.Boolean, default=False)
@@ -15,10 +14,10 @@ class UserModel(db.Model):
     gender = db.Column(db.String(100), nullable=False)
     isOnline = db.Column(db.Boolean)
     isBlackListed = db.Column(db.Boolean)
+    registeredAt = db.Column(db.String(250))
 
     def __init__(self, name, password, imageUrl, phone, gender):
         self.name = name
-        # self.email = email
         self.imageUrl = imageUrl
         self.password = password
         self.phone_number = phone
@@ -33,16 +32,11 @@ class UserModel(db.Model):
             "userId": self.user_id,
             "name": self.name,
             "phone": self.phone_number,
-            # "email": self.email,
             "imageUrl": self.imageUrl,
             "isAdmin": self.is_admin,
             "gender": self.gender,
             "isOnline": self.isOnline
         }
-
-    # @classmethod
-    # def find_by_email(cls, email: str) -> 'UserModel':
-    #     return cls.query.filter_by(email=email).first()
 
     @classmethod
     def find_by_phone(cls, phone: str) -> 'UserModel':

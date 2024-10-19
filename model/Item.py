@@ -21,13 +21,15 @@ class ItemModel(db.Model):
     image = db.Column(db.String(256), nullable=False)
     galleryId = db.Column(db.String(256), nullable=True)
     hasGallery = db.Column(db.Boolean, default=True, nullable=False)
+    hasVendor = db.Column(db.Boolean)
+    vendor = db.Column(db.String(256))
     itemCode = db.Column(db.String(256), nullable=True)
     forSale = db.Column(db.Boolean, default=True)
     profit = db.Column(db.Float, default=0.0, nullable=False)
     createdAt = db.Column(db.String(256))
     updatedAt = db.Column(db.String(10))
 
-    def __init__(self, categoryId, name, brand, condition, model, price, stock, image, hasGallery, forSale, cost):
+    def __init__(self, categoryId, name, brand, condition, model, price, stock, image, hasGallery, forSale, cost, hasVendor):
         self.categoryId = categoryId
         self.name = name
         self.brand = brand
@@ -43,6 +45,7 @@ class ItemModel(db.Model):
         self.itemCode = generate_unique_code()
         self.createdAt = datetime.now()
         self.profit = self.stock * (self.sellingPrice - self.cost)
+        self.hasVendor = str_to_bool(hasVendor)
 
     def adminJson(self):
         return {
@@ -54,12 +57,13 @@ class ItemModel(db.Model):
             "model": self.model,
             "stock": self.stock,
             "image": self.image,
+            "hasVendor": self.hasVendor,
             "price": self.sellingPrice,
             "cost": self.cost,
             "hasGallery": self.hasGallery,
             "profit": self.profit,
             "forSale": self.forSale,
-            "createdAt": self.createdAt,
+            "createdAt": str(self.createdAt),
             "updatedAt": self.updatedAt
         }
 

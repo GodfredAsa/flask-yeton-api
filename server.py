@@ -17,7 +17,7 @@ from resource.UserResource import UserRegistrationResource, UserLogin, LogoutUse
 from db import db
 from flask_cors import CORS
 
-from resource.VendorResource import VendorResource
+from resource.VendorResource import VendorResource, VendorItemResource, UnAssignItemVendorItemResource
 
 app = Flask(__name__)
 
@@ -77,6 +77,8 @@ api.add_resource(BlackListUserResource, "/api/admin/users/<string:email>/blackli
 
 
 api.add_resource(VendorResource, "/api/vendors")
+api.add_resource(VendorItemResource, "/api/vendors/<string:vendorId>")
+api.add_resource(UnAssignItemVendorItemResource, "/api/vendors/<string:vendorId>/<string:itemId>/un-assign")
 
 
 if __name__ == "__main__":

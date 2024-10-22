@@ -47,6 +47,9 @@ class ItemModel(db.Model):
         self.profit = self.stock * (self.sellingPrice - self.cost)
         self.hasVendor = str_to_bool(hasVendor)
 
+    def __str__(self):
+        return f"Name: {self.name}, profit:{self.profit}"
+
     def adminJson(self):
         return {
             "itemId": self.item_id,

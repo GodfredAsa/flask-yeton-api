@@ -1,5 +1,4 @@
 from db import db
-from model.Vendor import VendorModel
 from utils.GeneralUtils import generate_uuid
 from  typing import List
 
@@ -16,16 +15,20 @@ class VendorItemModel(db.Model):
         self.vendorId = vendorId
         self.vendorItemId = generate_uuid()
 
-    def json(self):
-        return {
-            "vendor": VendorModel.find_by_uuid(self.vendorId).json(),
-            "items": [vendor for vendor in VendorItemModel.find_all() if vendor.vendorId == self.vendorId],
-            "image": self.vendorId
-        }
+    # def json(self):
+    #     return {
+    #         "vendor": VendorModel.find_by_uuid(self.vendorId).json(),
+    #         "items": [vendor for vendor in VendorItemModel.find_all() if vendor.vendorId == self.vendorId],
+    #         "image": self.vendorId
+    #     }
 
     @classmethod
     def find_by_uuid(cls, vendorItemId: str) -> 'VendorItemModel':
         return cls.query.filter_by(vendorItemId=vendorItemId).first()
+
+    @classmethod
+    def find_by_item_uuid(cls, itemId: str) -> 'VendorItemModel':
+        return cls.query.filter_by(itemId=itemId).first()
 
     @classmethod
     def find_all(cls) -> List['VendorItemModel']:

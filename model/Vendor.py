@@ -1,8 +1,12 @@
 from datetime import datetime
 
+from flask import jsonify
+
 from db import db
 from model.Item import ItemModel
 from typing import List
+
+from model.VendorItem import VendorItemModel
 from utils.GeneralUtils import generate_uuid
 
 
@@ -12,23 +16,26 @@ class VendorModel(db.Model):
     vendorId = db.Column(db.String(256), unique=True)
     name = db.Column(db.String(80), nullable=False)
     phone = db.Column(db.String(10), nullable=False)
-    itemId = db.Column(db.String(10), nullable=False, unique=True)
     createdAt = db.Column(db.String(250))
 
-    def __init__(self, name, phone, itemId):
+    def __init__(self, name, phone):
         self.name = name
         self.phone = phone
-        self.itemId = itemId
         self.vendorId = generate_uuid()
         self.createdAt = datetime.now()
 
     def json(self):
+        vendors_items = []
+
+        for vi in VendorItemModel.find_all():
+            if vi.vendorId == self.vendorId:
+                vendors_items.append(vi.itemId)
         return {
             "vendorId": self.vendorId,
             "name": self.name,
             "phone": self.phone,
             "createdAt": str(self.createdAt),
-            "item": [ItemModel.find_by_uuid(self.itemId).adminJson()]
+            "item": [ItemModel.find_by_uuid(ID).json() for ID in vendors_items]
         }
 
     @classmethod

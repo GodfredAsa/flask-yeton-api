@@ -15,7 +15,7 @@ class CategoryModel(db.Model):
         self.category_id = generate_uuid()
 
     def __str__(self):
-        f"""<Category: {self.name} | {self.categoryImageUrl} >"""
+        return f"<Category: {self.name} | {self.categoryImageUrl} >"
 
     def json(self):
         return {

@@ -18,3 +18,5 @@ Activate virtual environment `source <virtual_name>/bin/activate`. But you used 
 Installing dependencies from the requirements.txt. Copy, paste and run this `pip install -r requirements.txt`
 Running the server python app.py or python3 app.py depending on which version of python installed or if have multiple python versions on your computer, you should see  Running on http://127.0.0.1:5003 Press CTRL+C  to quit
 Congratulations you have started server. If you have issues and need assistance contact me asap on LinkedIn
+`docker build -t yeton-api .`
+`docker run -p 88:5001 --name yetona-api-container yeton-api`

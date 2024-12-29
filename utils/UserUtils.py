@@ -48,8 +48,10 @@ def validate_phone(phone):
     return re.match(pattern, phone) is not None
 
 
-def generate_token(user: 'UserModel') -> str:
-    return create_refresh_token(user.phone_number) \
-        if user.is_admin \
-        else create_access_token(identity=user.phone_number)
+# def generate_token(user: 'UserModel') -> str:
+#     return create_refresh_token(user.phone_number) \
+#         if user.is_admin \
+#         else create_access_token(identity=user.phone_number)
 
+def generate_token(user: 'UserModel') -> str:
+    return user.phone_number

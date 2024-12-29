@@ -34,7 +34,9 @@ class FAQResource(Resource):
             faq.title = data['title']
             faq.message = data['message']
             faq.save_to_db()
+
             return return_message(status.OK, "FAQ successfully update")
+
         return return_message(status.CONFLICT, "The FAQ title already exists")
 
     def get(self, faqId):
@@ -43,9 +45,10 @@ class FAQResource(Resource):
             return return_message(status.NOT_FOUND, "The FAQ not found")
         return faq.json(), status.OK
 
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def delete(self, faqId):
         faq = FAQModel.find_by_uuid(faqId)
         if not faq:
             return return_message(status.NOT_FOUND, "The FAQ not found")
+        faq.delete_from_db()
         return return_message(status.OK, "FAQ deleted successfully"), status.OK

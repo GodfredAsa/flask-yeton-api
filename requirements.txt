@@ -13,4 +13,5 @@ requests~=2.28.1
 bcrypt
 twilio
 flask-cors
+gunicorn>=20.0.0
 # VQG7HMPQUEAD3BTWVFXKSYUC

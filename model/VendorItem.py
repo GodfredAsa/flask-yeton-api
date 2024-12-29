@@ -15,13 +15,6 @@ class VendorItemModel(db.Model):
         self.vendorId = vendorId
         self.vendorItemId = generate_uuid()
 
-    # def json(self):
-    #     return {
-    #         "vendor": VendorModel.find_by_uuid(self.vendorId).json(),
-    #         "items": [vendor for vendor in VendorItemModel.find_all() if vendor.vendorId == self.vendorId],
-    #         "image": self.vendorId
-    #     }
-
     @classmethod
     def find_by_uuid(cls, vendorItemId: str) -> 'VendorItemModel':
         return cls.query.filter_by(vendorItemId=vendorItemId).first()

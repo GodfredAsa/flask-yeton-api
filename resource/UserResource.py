@@ -59,13 +59,13 @@ class AdminUserResource(Resource):
     @classmethod
     @jwt_refresh_token_required
     def get(cls):
-        return [user.json() for user in UserModel.find_all_users() if not user.is_admin]
+        return [user.json() for user in UserModel.find_all_users()]
 
 
 class BlackListUserResource(Resource):
     @jwt_refresh_token_required
-    def put(self, email):
-        user = UserModel.find_by_email(email)
+    def put(self, phone):
+        user = UserModel.find_by_phone(phone)
         if not user:
             return return_message(status.BAD_REQUEST, "User not found"), status.BAD_REQUEST
         isBlackListed = False if user.isBlackListed else True
@@ -73,17 +73,19 @@ class BlackListUserResource(Resource):
         user.save_to_db()
         return return_message(
             status.OK,
-            f"User with email {email} account blocked"
+            f"User with {phone} account blocked"
             if isBlackListed
-            else f"User with email {email} account activated"
+            else f"User with {phone} account activated"
         )
 
     @jwt_refresh_token_required
-    def get(self, email):
-        user = UserModel.find_by_email(email)
+    def get(self, phone):
+        user = UserModel.find_by_phone(phone)
         if not user:
             return return_message(status.BAD_REQUEST, "User not found"), status.BAD_REQUEST
-        return user.json(), status.OK
+        if not user.is_admin:
+            return return_message(status.UNAUTHORIZED, "Not enough permission"), status.UNAUTHORIZED
+        return [user.json() for user in UserModel.find_all_users() if user.isBlackListed], status.OK
 
 
 class UserLogin(Resource):
@@ -91,7 +93,7 @@ class UserLogin(Resource):
     def post(cls):
         data = request.get_json()
         if not verify_credentials(data['phone'], data['password']):
-            return return_message(status.BAD_REQUEST, "Invalid User credentials"), status.BAD_REQUEST
+            return return_message(status.BAD_REQUEST, "Invalid login credentials"), status.BAD_REQUEST
         user = UserModel.find_by_phone(data["phone"])
         if user.isBlackListed:
             return return_message(status.BAD_REQUEST, "Your account is blocked. Please contact support"), status.BAD_REQUEST

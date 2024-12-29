@@ -54,7 +54,7 @@ class ItemModel(db.Model):
         return {
             "itemId": self.item_id,
             "itemName": self.name,
-            "category": CategoryModel.find_by_uuid(self.categoryId).json() if self.hasGallery else None,
+            # "category": CategoryModel.find_by_uuid(self.categoryId).name,
             "brand": self.brand,
             "condition": self.condition,
             "model": self.model,

@@ -18,10 +18,10 @@ def return_message(status: int, message: str) -> object:
 
 
 def generate_unique_code() -> str:
-    return generate_random_letters(4) + \
-           generate_random_numbers(3) +\
-           generate_random_letters(2) + \
-           generate_random_numbers(4)
+    return generate_random_letters(2) + \
+        generate_random_numbers(2) + \
+        generate_random_letters(1) + \
+        generate_random_numbers(2)
 
 
 def generate_random_letters(num: int) -> str:

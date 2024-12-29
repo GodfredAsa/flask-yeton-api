@@ -32,10 +32,10 @@ class ItemResource(Resource):
 
 class AdminItemsResource(Resource):
 
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def post(self):
         data = item_data()
-        # print(data)
+        print(data['categoryId'])
         if not CategoryModel.find_by_uuid(data['categoryId']):
             return return_message(404, "Category not found")
         if data['condition'] not in ["NEW", "SLIGHTLY USED"]:

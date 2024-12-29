@@ -34,6 +34,7 @@ class UserModel(db.Model):
             "phone": self.phone_number,
             "imageUrl": self.imageUrl,
             "isAdmin": self.is_admin,
+            "isBlock": self.isBlackListed,
             "gender": self.gender,
             "isOnline": self.isOnline
         }

@@ -16,9 +16,11 @@ import http.client as status
 
 class PlaceOrders(Resource):
     def get(self):  # NOT COMPLETED ORDERS
-        return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus != OrderStatus.COMPLETED]
+        # return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus != OrderStatus.COMPLETED]
+        return [order.json() for order in OrderItemModel.find_all_orders()]
 
-    # @jwt_required
+
+    @jwt_required
     def post(self):
         data = order_data()
         user = UserModel.find_by_uuid(data['userId'])
@@ -40,7 +42,15 @@ class PlaceOrders(Resource):
 
         item.stock -= data['qty']
         item.save_to_db()
+
         orderItem = OrderItemModel(data['qty'], user.user_id, item.item_id)
+
+        orderItem.user = user.phone_number
+        orderItem.itemId = data['itemId']
+        orderItem.item = item.name
+        orderItem.itemPrice = item.sellingPrice
+        orderItem.totalProfit = data['qty'] * (item.sellingPrice - item.cost)
+        orderItem.totalCost = data['qty'] * item.cost
         orderItem.save_to_db()
 
         return orderItem.json()
@@ -58,14 +68,15 @@ class PlacedOrderResource(Resource):
     @jwt_refresh_token_required
     @jwt_required
     def delete(self, orderId):
+        print("deleting ")
         order = OrderItemModel.find_by_uuid(orderId)
         if not order:
             return return_message(status.NOT_FOUND, "Order not found"), status.NOT_FOUND
-        if order.orderStatus == OrderStatus.COMPLETED or order.orderStatus == OrderStatus.CANCELLED:
-            return return_message(status.BAD_REQUEST, "You cannot delete a cancelled or fulfilled order"), status.BAD_REQUEST
-        item = ItemModel.find_by_uuid(order.itemId)
-        item.stock += order.qty
-        item.save_to_db()
+        # if order.orderStatus == OrderStatus.COMPLETED or order.orderStatus == OrderStatus.CANCELLED:
+        #     return return_message(status.BAD_REQUEST, "You cannot delete a cancelled or fulfilled order"), status.BAD_REQUEST
+        # item = ItemModel.find_by_uuid(order.itemId)
+        # item.stock += order.qty
+        # item.save_to_db()
         order.delete_from_db()
         return return_message(status.OK, "Order deleted successfully"), status.OK
 
@@ -87,18 +98,19 @@ class PlacedOrderResource(Resource):
 class CancelPlacedOrder(Resource):
     @jwt_refresh_token_required
     @jwt_required
-    def put(self, orderId):
+    def delete(self, orderId):
         order = OrderItemModel.find_by_uuid(orderId)
+        item = ItemModel.find_by_uuid(order.itemId)
         if not order:
             return return_message(status.NOT_FOUND, "Order not found"), status.NOT_FOUND
         if order.orderStatus == OrderStatus.COMPLETED:
-            return return_message(status.BAD_REQUEST, "Completed Order cannot be cancelled"), status.BAD_REQUEST
-        if order.orderStatus == OrderStatus.CANCELLED:
-            return return_message(status.CONFLICT, "Order is already cancelled"), status.CONFLICT
-        item = ItemModel.find_by_uuid(order.itemId)
-        item.stock += order.qty
-        item.save_to_db()
-        order.delete_from_db()
+            order.delete_from_db()
+            return return_message(status.BAD_REQUEST, "Completed Order successfully removed"), status.BAD_REQUEST
+        if order.orderStatus == OrderStatus.PENDING and item:
+            item.stock += order.qty
+            item.save_to_db()
+            order.delete_from_db()
+            return return_message(status.BAD_REQUEST, "Item does not exits"), status.BAD_REQUEST
         return return_message(status.OK, f"Order with {order.orderCode} code cancelled successfully")
 
 

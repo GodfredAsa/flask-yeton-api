@@ -32,9 +32,7 @@ class VendorItemResource(Resource):
             return return_message(status.NOT_FOUND, "Vendor not found")
         if not ItemModel.find_by_uuid(data['itemId']):
             return return_message(status.BAD_REQUEST, "item not found")
-        if VendorItemModel.find_by_item_uuid(data['itemId']).vendorId == vendorId:
-            return return_message(status.BAD_REQUEST, "Item Already assigned to Vendor")
-        vendorItem = VendorItemModel(itemId=data['itemid'], vendorId=vendorId)
+        vendorItem = VendorItemModel(itemId=data['itemId'], vendorId=vendorId)
         vendorItem.save_to_db()
         return VendorModel.find_by_uuid(vendorId).json(), status.OK
 

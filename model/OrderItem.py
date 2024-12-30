@@ -38,10 +38,10 @@ class OrderItemModel(db.Model):
         self.createdAt = datetime.now().date()
         self.updatedAt = None
 
-    # def __str__(self):
-    #     return f"< Order Items: Name:{self.item} " \
-    #            f"Price:{ItemModel.find_by_uuid(self.itemId).sellingPrice} " \
-    #            f"total Cost: {self.totalCost}"
+    def __str__(self):
+        return f"< Order Items: Name:{self.item} " \
+               f"Price:{ItemModel.find_by_uuid(self.itemId).sellingPrice} " \
+               f"total Cost: {self.totalCost}"
 
     def json(self):
         return {

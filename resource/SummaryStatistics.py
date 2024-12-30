@@ -7,7 +7,7 @@ from model.OrderItem import OrderItemModel
 from model.User import UserModel
 from functools import reduce
 from operator import add
-
+from collections import defaultdict
 
 class SummaryStatisticsResource(Resource):
     def get(self):
@@ -69,5 +69,49 @@ class UserSummary(Resource):
             "blocked": len([user for user in UserModel.find_all_users() if user.isBlackListed]),
             "admins": len([user for user in UserModel.find_all_users() if user.is_admin]),
             "customers": len([user for user in UserModel.find_all_users() if not user.is_admin]),
+        }
 
+
+class VendorItemAndItems(Resource):
+
+    def get(self):
+        vendorItems = len([item for item in ItemModel.find_all() if item.hasVendor])
+        nonVendorItems = len([item for item in ItemModel.find_all() if not item.hasVendor])
+        return {
+            "data": [vendorItems, nonVendorItems],
+            "labels": ["Vendor", "None Vendor"]
+        }
+
+
+class StockLevelSummary(Resource):
+
+    def get(self):
+        return {
+            "data": [item.stock for item in ItemModel.find_all()],
+            "labels": [item.name for item in ItemModel.find_all()],
+        }
+
+
+class DailySalesSummary(Resource):
+    def get(self):
+        sales = []
+        retData = []
+        labels = []
+        profits = []
+        data = OrderItemModel.find_all_orders()
+        sales_per_day = defaultdict(float)
+        for order in data:
+            order_date = order.createdAt
+            total_cost = order.totalCost
+
+            labels.append(order_date)
+            retData.append(total_cost)
+            profits.append(order.totalProfit)
+
+            sales.append(sales_per_day)
+
+        return {
+            "data": retData,
+            "labels": labels,
+            "profits": profits
         }

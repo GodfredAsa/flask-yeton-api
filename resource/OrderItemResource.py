@@ -20,9 +20,10 @@ class PlaceOrders(Resource):
         return [order.json() for order in OrderItemModel.find_all_orders()]
 
 
-    @jwt_required
+    # @jwt_required
     def post(self):
         data = order_data()
+        print(data)
         user = UserModel.find_by_uuid(data['userId'])
         item = ItemModel.find_by_uuid(data['itemId'])
 

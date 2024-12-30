@@ -83,7 +83,7 @@ class AdminItemResource(Resource):
             return return_message(status.NOT_FOUND, "Item not found"), status.NOT_FOUND
         return item.adminJson(), status.OK
 
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def delete(self, itemId):
         item = ItemModel.find_by_uuid(itemId)
         if not item:

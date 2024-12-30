@@ -13,7 +13,8 @@ from resource.ItemResource import ItemsResource, ItemResource, AdminItemsResourc
 from resource.OrderItemResource import PlaceOrders, PlacedOrderResource, CancelPlacedOrder, AllUserOrders, \
     OrdersFulfilledResource
 from resource.RegionsResource import RegionsResource, RegionResource
-from resource.SummaryStatistics import SummaryStatisticsResource, OrderSummary, StockSummary, UserSummary
+from resource.SummaryStatistics import SummaryStatisticsResource, OrderSummary, StockSummary, UserSummary, \
+    VendorItemAndItems, StockLevelSummary, DailySalesSummary
 from resource.UserResource import UserRegistrationResource, UserLogin, LogoutUser, AdminUserResource, \
     BlackListUserResource
 from db import db
@@ -85,13 +86,19 @@ api.add_resource(SummaryStatisticsResource, "/api/summary")
 api.add_resource(OrderSummary, "/api/admin/order-summary")
 api.add_resource(StockSummary, "/api/admin/stock-summary")
 api.add_resource(UserSummary, "/api/admin/user-summary")
+api.add_resource(VendorItemAndItems, "/api/admin/vendor-item")
+api.add_resource(StockLevelSummary, "/api/admin/stock-levels")
+api.add_resource(DailySalesSummary, "/api/admin/daily-sales")
+
 
 api.add_resource(TestServerResource, "/")
 
 
+
+
 if __name__ == "__main__":
     db.init_app(app)
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(port=5001, debug=True)
 
 
 #  sudo lsof -i :5000

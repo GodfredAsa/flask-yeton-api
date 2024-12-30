@@ -1,11 +1,7 @@
 from datetime import datetime
-
-from flask import jsonify
-
 from db import db
 from model.Item import ItemModel
 from typing import List
-
 from model.VendorItem import VendorItemModel
 from utils.GeneralUtils import generate_uuid
 

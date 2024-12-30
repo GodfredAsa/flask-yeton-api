@@ -57,13 +57,13 @@ class AdminUserResource(Resource):
             return return_message(status.BAD_REQUEST, "Admin not added"), status.BAD_REQUEST
 
     @classmethod
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def get(cls):
         return [user.json() for user in UserModel.find_all_users()]
 
 
 class BlackListUserResource(Resource):
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def put(self, phone):
         user = UserModel.find_by_phone(phone)
         if not user:

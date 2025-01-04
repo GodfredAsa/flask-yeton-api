@@ -82,7 +82,7 @@ class PlacedOrderResource(Resource):
         return return_message(status.OK, "Order deleted successfully"), status.OK
 
     # FULFILLING AN ORDER OR COMPLETE THE ORDER
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def put(self, orderId):
         order = OrderItemModel.find_by_uuid(orderId)
         if not order:

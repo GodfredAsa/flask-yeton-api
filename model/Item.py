@@ -2,7 +2,6 @@ from datetime import datetime
 
 from db import db
 from model.Category import CategoryModel
-from model.Gallery import GalleryModel
 from utils.GeneralUtils import generate_uuid, generate_unique_code, str_to_bool
 
 
@@ -10,7 +9,7 @@ class ItemModel(db.Model):
     __tablename__ = "items"
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.String(20), unique=True)
-    categoryId = db.Column(db.String(20))
+    category = db.Column(db.String(20))
     name = db.Column(db.String(80), nullable=False)
     brand = db.Column(db.String(250))
     condition = db.Column(db.String(80), nullable=False)
@@ -30,7 +29,7 @@ class ItemModel(db.Model):
     updatedAt = db.Column(db.String(10))
 
     def __init__(self, categoryId, name, brand, condition, model, price, stock, image, hasGallery, forSale, cost, hasVendor):
-        self.categoryId = categoryId
+        self.category = CategoryModel.find_by_uuid(categoryId).name
         self.name = name
         self.brand = brand
         self.condition = condition
@@ -54,7 +53,7 @@ class ItemModel(db.Model):
         return {
             "itemId": self.item_id,
             "itemName": self.name,
-            # "category": CategoryModel.find_by_uuid(self.categoryId).name,
+            "category": self.category,
             "brand": self.brand,
             "condition": self.condition,
             "model": self.model,
@@ -77,7 +76,6 @@ class ItemModel(db.Model):
             "category": CategoryModel.find_by_uuid(self.categoryId).json(),
             "brand": self.brand,
             "condition": self.condition,
-            # "gallery": GalleryModel.find_by_uuid(self.galleryId).json(),
             "model": self.model,
             "stock": self.stock,
             "image": self.image,

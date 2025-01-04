@@ -90,10 +90,7 @@ api.add_resource(VendorItemAndItems, "/api/admin/vendor-item")
 api.add_resource(StockLevelSummary, "/api/admin/stock-levels")
 api.add_resource(DailySalesSummary, "/api/admin/daily-sales")
 
-
 api.add_resource(TestServerResource, "/")
-
-
 
 
 if __name__ == "__main__":

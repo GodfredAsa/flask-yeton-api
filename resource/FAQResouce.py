@@ -12,7 +12,7 @@ class FAQsResource(Resource):
     def get(self):
         return [faq.json() for faq in FAQModel.find_all_faqs()], status.OK
 
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def post(self):
         data = faq_data()
 
@@ -24,7 +24,7 @@ class FAQsResource(Resource):
 
 
 class FAQResource(Resource):
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def put(self, faqId):
         data = faq_data()
         faq = FAQModel.find_by_uuid(faqId)

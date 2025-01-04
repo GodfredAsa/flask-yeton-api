@@ -34,20 +34,14 @@ class UserRegistrationResource(Resource):
 
 class AdminUserResource(Resource):
     @classmethod
-    @jwt_refresh_token_required
     def post(cls):
         data = user_data()
-        print(data)
         try:
-            # if user_exist_by_email(data['email']):
-            #     return return_message(status.BAD_REQUEST, USER_ALREADY_EXISTS), status.BAD_REQUEST
             if not validate_phone(data['phone']):
                 return return_message(status.BAD_REQUEST, "Invalid Phone Number"), status.BAD_REQUEST
             if user_exist_by_phone(data['phone']):
                 return return_message(status.BAD_REQUEST, USER_ALREADY_EXISTS_BY_PHONE), status.BAD_REQUEST
             user = UserModel(**data)
-            # if not validate_email(user.email):
-            #     return return_message(status.BAD_REQUEST, INVALID_EMAIL), status.BAD_REQUEST
             user.password = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
             user.is_admin = True
             user.save_to_db()

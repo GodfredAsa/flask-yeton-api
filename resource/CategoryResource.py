@@ -21,7 +21,7 @@ class CategoriesResource(Resource):
 #  ALL ADMIN RESOURCES
 class CategoryResource(Resource):
     def get(self, categoryId):
-        category = CategoryModel.find_by_uuid(categoryId)
+        category = CategoryModel.find_by_category_name(categoryId)
         if not category:
             return return_message(404, "Category not found"), status.NOT_FOUND
         return category.json(), status.OK

@@ -97,8 +97,8 @@ class PlacedOrderResource(Resource):
 
 
 class CancelPlacedOrder(Resource):
-    @jwt_refresh_token_required
-    @jwt_required
+    # @jwt_refresh_token_required
+    # @jwt_required
     def delete(self, orderId):
         order = OrderItemModel.find_by_uuid(orderId)
         item = ItemModel.find_by_uuid(order.itemId)
@@ -122,7 +122,14 @@ class OrdersFulfilledResource(Resource):
 
 
 class AllUserOrders(Resource):
-    @jwt_refresh_token_required
-    @jwt_required
+    # @jwt_refresh_token_required
+    # @jwt_required
     def get(self, userId):
         return [order.json() for order in OrderItemModel.find_all_orders() if order.userId == userId and order.orderStatus == OrderStatus.PENDING]
+
+
+class AllOrders(Resource):
+    def get(self, phone):
+        if UserModel.find_by_phone(phone):
+            return [ order.json() for order in OrderItemModel.find_all_orders() if order.user == phone ]
+        return return_message(404, "User not Found")

@@ -49,7 +49,7 @@ class AdminItemsResource(Resource):
 
 
 class AdminItemResource(Resource):
-    @jwt_refresh_token_required
+    # @jwt_refresh_token_required
     def put(self, itemId):
         data = item_data()
         item = ItemModel.find_by_uuid(itemId)

@@ -11,7 +11,7 @@ from resource.FAQResouce import FAQsResource, FAQResource
 from resource.ItemGalleryResource import GalleriesResource, ItemGalleryResource, GalleryResource
 from resource.ItemResource import ItemsResource, ItemResource, AdminItemsResource, AdminItemResource
 from resource.OrderItemResource import PlaceOrders, PlacedOrderResource, CancelPlacedOrder, AllUserOrders, \
-    OrdersFulfilledResource
+    OrdersFulfilledResource, AllOrders
 from resource.RegionsResource import RegionsResource, RegionResource
 from resource.SummaryStatistics import SummaryStatisticsResource, OrderSummary, StockSummary, UserSummary, \
     VendorItemAndItems, StockLevelSummary, DailySalesSummary
@@ -71,6 +71,7 @@ api.add_resource(CancelPlacedOrder, "/api/orders/<string:orderId>/cancel")
 api.add_resource(AllUserOrders, "/api/users/<string:userId>/orders")  # user orders
 
 api.add_resource(OrdersFulfilledResource, "/api/admin/orders/fulfilled")  # user orders
+api.add_resource(AllOrders, "/api/orders/users/<string:phone>")  # user orders
 
 # ADMIN RESOURCES not used in postman BlackListUserResource
 api.add_resource(AdminUserResource, "/api/users/admin")

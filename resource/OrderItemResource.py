@@ -118,6 +118,7 @@ class CancelPlacedOrder(Resource):
 class OrdersFulfilledResource(Resource):
     @jwt_refresh_token_required
     def get(self):
+        # fhhf
         return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus == OrderStatus.COMPLETED]
 
 

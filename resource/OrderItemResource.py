@@ -1,9 +1,7 @@
 from datetime import datetime
-
 from flask_jwt import jwt_required
 from flask_jwt_extended import jwt_refresh_token_required
 from flask_restful import Resource
-
 from enums.OrderStatus import OrderStatus
 from enums.PaymentStatus import PaymentStatus
 from model.Item import ItemModel
@@ -18,7 +16,6 @@ class PlaceOrders(Resource):
     def get(self):  # NOT COMPLETED ORDERS
         # return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus != OrderStatus.COMPLETED]
         return [order.json() for order in OrderItemModel.find_all_orders()]
-
 
     # @jwt_required
     def post(self):
@@ -36,7 +33,8 @@ class PlaceOrders(Resource):
             return return_message(status.BAD_REQUEST, "Item out of stock"), status.BAD_REQUEST
 
         if data['qty'] <= 0:
-            return return_message(status.BAD_REQUEST, f"Sorry you cannot purchase {data['qty']} of {item.name}"), status.BAD_REQUEST
+            return return_message(status.BAD_REQUEST,
+                                  f"Sorry you cannot purchase {data['qty']} of {item.name}"), status.BAD_REQUEST
 
         if data['qty'] > item.stock:
             return return_message(status.CONFLICT, f"Sorry the requested item available stock is {item.stock}")
@@ -118,19 +116,20 @@ class CancelPlacedOrder(Resource):
 class OrdersFulfilledResource(Resource):
     @jwt_refresh_token_required
     def get(self):
-        # fhhf
-        return [order.json() for order in OrderItemModel.find_all_orders() if order.orderStatus == OrderStatus.COMPLETED]
+        return [order.json() for order in OrderItemModel.find_all_orders() if
+                order.orderStatus == OrderStatus.COMPLETED]
 
 
 class AllUserOrders(Resource):
     # @jwt_refresh_token_required
     # @jwt_required
     def get(self, userId):
-        return [order.json() for order in OrderItemModel.find_all_orders() if order.userId == userId and order.orderStatus == OrderStatus.PENDING]
+        return [order.json() for order in OrderItemModel.find_all_orders() if
+                order.userId == userId and order.orderStatus == OrderStatus.PENDING]
 
 
 class AllOrders(Resource):
     def get(self, phone):
         if UserModel.find_by_phone(phone):
-            return [ order.json() for order in OrderItemModel.find_all_orders() if order.user == phone ]
+            return [order.json() for order in OrderItemModel.find_all_orders() if order.user == phone]
         return return_message(404, "User not Found")

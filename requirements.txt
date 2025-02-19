@@ -10,3 +10,6 @@ Werkzeug==2.0.0
 requests~=2.28.1
 bcrypt
 flask-cors
+flask-socketio
+python-socketio
+eventlet

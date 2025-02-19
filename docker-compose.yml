@@ -8,7 +8,7 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=production
-      - DATABASE_URL=sqlite:///data.db
+      - DATABASE_URL=sqlite:///data/data.db
     volumes:
       - sqlite_data:/app
     restart: unless-stopped
